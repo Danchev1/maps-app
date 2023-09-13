@@ -11,7 +11,7 @@ import {
 import 'cesium/Widgets/widgets.css';
 
 export const initCesiumContainer = () => {
-  return new Viewer('cesiumContainer', {
+  return new Viewer('cesium-container', {
     animation: false,
     baseLayerPicker: false,
     fullscreenButton: false,
