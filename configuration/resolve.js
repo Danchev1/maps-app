@@ -1,5 +1,5 @@
-import path from "path";
-import { paths } from "./paths.js";
+import path from 'path';
+import { paths } from './paths.js';
 
 export default {
   alias: {
@@ -17,5 +17,6 @@ export default {
     stream: false,
     crypto: false
   },
-  mainFiles: ['module', 'main', 'Cesium']
-}
+  mainFiles: ['module', 'main', 'Cesium'],
+  extensions: ['.js', '.jsx', '.json', '.ts', '.tsx']
+};

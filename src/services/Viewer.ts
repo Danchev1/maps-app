@@ -8,11 +8,12 @@ import {
   ScreenSpaceEventType,
   Cartographic,
   ArcType,
-  PolylineArrowMaterialProperty
+  PolylineArrowMaterialProperty,
+  Entity
 } from 'cesium';
 import 'cesium/Widgets/widgets.css';
 
-const pointColor = (type) => {
+const pointColor = (type: string): Color => {
   switch (type) {
     case 'intersection':
       return Color.RED;
@@ -26,7 +27,7 @@ const pointColor = (type) => {
       return Color.YELLOW;
   }
 };
-const pointPixelSize = (type) => {
+const pointPixelSize = (type: string): number => {
   switch (type) {
     case 'intersection':
       return 10;
@@ -41,7 +42,7 @@ const pointPixelSize = (type) => {
   }
 };
 
-export const initCesiumContainer = () => {
+export const initCesiumContainer = (): Viewer => {
   return new Viewer('cesium-container', {
     animation: false,
     baseLayerPicker: false,
@@ -63,7 +64,7 @@ export const initCesiumContainer = () => {
   });
 };
 
-export const initViewer = async () => {
+export const initViewer = async (): Promise<void> => {
   const viewer = initCesiumContainer();
   const response = await fetch('http://localhost:8003/map.json');
   const data = await response.json();
@@ -74,8 +75,8 @@ export const initViewer = async () => {
     // zoom to tileset and position camera in birds-eye view
     await viewer.zoomTo(tileset, new HeadingPitchRange(0, -90, 0));
     // listen for left mouse click event and draw a point (via Entities API) at picked position
-    let handler = new ScreenSpaceEventHandler(viewer.canvas);
-    handler.setInputAction((event) => {
+    const handler: ScreenSpaceEventHandler = new ScreenSpaceEventHandler(viewer.canvas);
+    handler.setInputAction((event: ScreenSpaceEventHandler.PositionedEvent) => {
       const pickedPosition = viewer.scene.pickPosition(event.position);
       if (defined(pickedPosition)) {
         // draw a point at picked position or moved to the new picked position
@@ -93,7 +94,7 @@ export const initViewer = async () => {
       }
     }, ScreenSpaceEventType.LEFT_CLICK);
     const nodes = new Map();
-    for (let node of data.map.list_node.node) {
+    for (const node of data.map.list_node.node) {
       nodes.set(node._id, {
         type: node._type,
         name: node._name,
@@ -102,7 +103,7 @@ export const initViewer = async () => {
       // console.log(`node:${JSON.stringify(nodes.get(node._id))} for node with _id: ${node._id}`)
     }
     const lanes = new Map();
-    for (let lane of data.map.list_lane.lane) {
+    for (const lane of data.map.list_lane.lane) {
       lanes.set(lane._id, {
         nodes: {
           begin: lane._begin_node,
@@ -117,19 +118,20 @@ export const initViewer = async () => {
       // console.log(`lane:${JSON.stringify(lanes.get(lane._id))} for lane with _id: ${lane._id}`)
     }
     const waypoints = new Map();
-    for (let waypoint of data.map.list_waypoint.waypoint) {
+    for (const waypoint of data.map.list_waypoint.waypoint) {
       waypoints.set(waypoint._id, {
         longitude: parseFloat(waypoint._lon),
         latitude: parseFloat(waypoint._lat)
       });
       // console.log(`waypoint:${JSON.stringify(waypoints.get(waypoint._id))}`)
     }
-    for (let lane of lanes) {
+    for (const lane of lanes) {
       const fromWaypoint = waypoints.get(lane[1].waypoints.from);
       const toWaypoint = waypoints.get(lane[1].waypoints.to);
       const from = Cartographic.toCartesian(Cartographic.fromDegrees(fromWaypoint.longitude, fromWaypoint.latitude, -20.0));
       const to = Cartographic.toCartesian(Cartographic.fromDegrees(toWaypoint.longitude, toWaypoint.latitude, -20.0));
-      const line = viewer.entities.add({
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const line: Entity = viewer.entities.add({
         name: 'Purple straight arrow at height',
         polyline: {
           positions: [from, to],
@@ -139,16 +141,16 @@ export const initViewer = async () => {
         }
       });
     }
-
-    const typeOfWaypoint = (waypointIdentifier) => {
-      for (let node of nodes) {
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    const typeOfWaypoint = (waypointIdentifier: unknown) => {
+      for (const node of nodes) {
         if (node[1].waypoint === waypointIdentifier) {
           return node[1].type;
         }
       }
     };
 
-    for (let waypoint of waypoints) {
+    for (const waypoint of waypoints) {
       const longitude = waypoint[1].longitude;
       const latitude = waypoint[1].latitude;
       const type = typeOfWaypoint(waypoint[0]);
@@ -156,7 +158,10 @@ export const initViewer = async () => {
       const color = pointColor(type);
       const geowaypoint = Cartographic.fromDegrees(longitude, latitude, -20.5);
       const point = Cartographic.toCartesian(geowaypoint);
+
       viewer.entities.add({
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         name: 'waypoint' + waypoint._id,
         position: point,
         point: {

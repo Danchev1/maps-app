@@ -1,16 +1,15 @@
-import path from "path";
-import CssMinimizerPlugin from "css-minimizer-webpack-plugin";
-import TerserPlugin from "terser-webpack-plugin";
-import { paths } from "./paths.js";
-import resolve from "./resolve.js";
-import module from "./module.js";
-import { plugins } from "./plugins.js";
-
+import path from 'path';
+import CssMinimizerPlugin from 'css-minimizer-webpack-plugin';
+import TerserPlugin from 'terser-webpack-plugin';
+import { paths } from './paths.js';
+import resolve from './resolve.js';
+import module from './module.js';
+import { plugins } from './plugins.js';
 
 export default {
   context: paths.root,
   entry: {
-    app: './src/index.js'
+    app: './src/index.ts'
   },
   output: {
     filename: 'app.js',
@@ -28,5 +27,5 @@ export default {
   },
   resolve,
   module,
-  plugins,
-}
+  plugins
+};

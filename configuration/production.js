@@ -1,8 +1,8 @@
-import path from "path";
-import { CleanWebpackPlugin } from "clean-webpack-plugin";
+import path from 'path';
+import { CleanWebpackPlugin } from 'clean-webpack-plugin';
 import { merge } from 'webpack-merge';
-import { paths } from "./paths.js";
-import common from "./common.js";
+import { paths } from './paths.js';
+import common from './common.js';
 
 const productionConfig = {
   plugins: [
@@ -10,6 +10,6 @@ const productionConfig = {
       root: path.resolve(paths.root, './dist')
     })
   ]
-}
+};
 
-export const webpackProdConfig = merge(common, productionConfig)
+export const webpackProdConfig = merge(common, productionConfig);

@@ -1,4 +1,4 @@
-import { initViewer } from './services/Viewer.js';
+import { initViewer } from './services/Viewer';
 import './assets/css/main.scss';
 
 initViewer()

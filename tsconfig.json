@@ -1,0 +1,40 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": ".",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitAny": true,
+    "moduleResolution": "node",
+    "module": "ES2015",
+    "outDir": "dist",
+    "target": "ESNext",
+    "sourceMap": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "paths": {
+      "@/*": [
+        "src/*"
+      ]
+    },
+    "typeRoots": [
+      "node_modules/@types",
+      "src/@types"
+    ],
+    "lib": [
+      "ES2016",
+      "DOM",
+      "DOM.Iterable"
+    ],
+    "types": [
+      "node"
+    ]
+  },
+  "exclude": [
+    "node_modules",
+    "configuration",
+    "dist",
+    "webpack.config.babel.js"
+  ]
+}

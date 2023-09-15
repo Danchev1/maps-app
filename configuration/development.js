@@ -1,13 +1,12 @@
-import path from "path";
+import path from 'path';
 import { merge } from 'webpack-merge';
-import common from "./common.js";
-import { paths } from "./paths.js";
-
+import common from './common.js';
+import { paths } from './paths.js';
 
 const developmentConfig = {
   devServer: {
     client: {
-      progress: true,
+      progress: true
     },
     compress: false,
     host: process.env.HOST_NAME || 'localhost',
@@ -17,11 +16,11 @@ const developmentConfig = {
     static: [
       {
         directory: path.resolve(paths.root, './dist'),
-        watch: true,
-      },
-    ],
+        watch: true
+      }
+    ]
   },
-  devtool: 'eval',
+  devtool: 'eval'
 };
 
-export const webpackDevConfig = merge(common, developmentConfig)
+export const webpackDevConfig = merge(common, developmentConfig);
